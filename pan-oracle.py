@@ -51,7 +51,7 @@ def decrypt(stdout, ct, host):
     result=[]
     for i in range(len(blocks)-1):
         result.insert(0, leakBlock(blocks[i+1], blocks[i], stdout, host))
-        print("Decrypted block: {}".format(result[-1]))
+        print("Decrypted block: {}".format(result[0]))
 
     return ''.join(result)
 
