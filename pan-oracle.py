@@ -22,14 +22,11 @@ def checkLog(chan):
     # correct padding!
     return "Integrity check failed" in data
 
+
 def leakBlock(b0, b1, chan, host):
     pt='\0'*16
-    first=True
     for i in range(15,-1, -1):
-        for j in range(0,256):
-            if j==0 and first:
-                first=False
-                continue
+        for j in range(255,-1,-1):
             a=block_xor(pt, b0)
             b=set_pad(a,i)
             ct=formatData(byte_xor(b, i, j)+b1)
@@ -51,9 +48,12 @@ def decrypt(stdout, ct, host):
     result=[]
     for i in range(len(blocks)-1):
         result.insert(0, leakBlock(blocks[i+1], blocks[i], stdout, host))
-        print("Decrypted block: {}".format(result[0]))
+        print("Decrypted block: {}".format(result[-1]))
 
     return ''.join(result)
+    
+
+    
 
 if __name__=="__main__":
     if len(sys.argv)<4:
